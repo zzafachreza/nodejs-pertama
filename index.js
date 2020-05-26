@@ -1,8 +1,9 @@
-var http = require('http');
-var server = http.createServer(function(req,res){
+var static = require('node-static');
+var file = new static.Server('index.html');
 
-	res.end("selamat datang di Aplikasi Pertamaku..");
-
-}).listen(80);
-
-console.log("Server is running on port 8000");
+require('http').createServer(function(request, response) {
+  request.addListener('end', function() {
+    file.serve(request, response);
+  }).resume();
+  
+}).listen(process.env.PORT || 5000);
